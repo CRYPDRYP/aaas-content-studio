@@ -1,0 +1,40 @@
+name: autonomous-anonymous-aaas
+version: 1.0.0
+description: "Autonomous Anonymous Agent-as-a-Service — clone this to stand up a new client AI agent, then run setup.sh (or start-here.sh for a generic agent with no business grounding) to configure it."
+hermes_requires: ">=0.20.0"
+author: "Autonomous Anonymous"
+license: "See LICENSE.md — internal use now, reserved commercial terms for future resale"
+
+# Env vars needed to run an agent bootstrapped from this distribution.
+# Business-specific values (name, phone, location, industry) are NOT env
+# vars — those live in templates/*.template and get substituted by setup.sh
+# into the new profile's SOUL.md / config.yaml.
+env_requires:
+  - name: ANTHROPIC_API_KEY
+    description: "Anthropic API key — primary model access for the client agent"
+    required: true
+
+  - name: OPENAI_API_KEY
+    description: "OpenAI API key — used for TTS / fallback model access"
+    required: false
+    default: ""
+
+  - name: FAL_KEY
+    description: "fal.ai API key — image and video generation (only needed if the client's agent generates media)"
+    required: false
+    default: ""
+
+# Only these paths are copied/replaced by `hermes profile install` and
+# `hermes profile update`. Everything else (memories, sessions, .env,
+# state.db, logs) is user-owned and never touched.
+distribution_owned:
+  - distribution.yaml
+  - SOUL.md
+  - config.yaml
+  - skills/
+  - cron/
+  - templates/
+  - setup.sh
+  - start-here.sh
+  - bootstrap.sh
+  - README.md

@@ -1,0 +1,22 @@
+name: Build & Lint
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Lint YAML
+        run: |
+          # Basic YAML validation
+          for f in *.yaml; do
+            python3 -c "import yaml; yaml.safe_load(open('$f'))" || exit 1
+          done
+      - name: Validate shell scripts
+        run: |
+          bash -n bootstrap.sh setup.sh start-here.sh
